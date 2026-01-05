@@ -1,0 +1,139 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Category {
+  id          Int            @id @default(autoincrement())
+  name        String         @unique
+  slug        String         @unique
+  description String?
+  type        String // "genre" hoặc "country"
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  films       FilmCategory[]
+
+  @@map("categories")
+}
+
+model Actor {
+  id        Int         @id @default(autoincrement())
+  name      String
+  slug      String      @unique
+  avatar    String?
+  bio       String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  films     FilmActor[]
+
+  @@map("actors")
+}
+
+model Keyword {
+  id        Int           @id @default(autoincrement())
+  name      String        @unique
+  slug      String        @unique
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  films     FilmKeyword[]
+
+  @@map("keywords")
+}
+
+model Film {
+  id          Int            @id @default(autoincrement())
+  title       String
+  slug        String         @unique
+  nameNormalized String?
+  description String?        @db.Text
+  poster      String?
+  thumbnail   String?
+  year        Int?
+  duration    Int? // phút
+  rating      Float?         @default(0)
+  viewCount   Int            @default(0)
+  status      String         @default("active") // active, inactive
+  linkM3u8    String? // Link m3u8 để phát video
+  linkWebview String? // Link webview để phát video
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  type        String         @default("movie") // movie, tv
+  categories  FilmCategory[]
+  actors      FilmActor[]
+  keywords    FilmKeyword[]
+  episodes    Episode[]
+
+  @@index([slug])
+  @@index([year])
+  @@index([viewCount])
+  @@index([status])
+  @@map("films")
+}
+
+model FilmCategory {
+  id         Int      @id @default(autoincrement())
+  filmId     Int
+  categoryId Int
+  film       Film     @relation(fields: [filmId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([filmId, categoryId])
+  @@map("film_categories")
+}
+
+model FilmActor {
+  id      Int   @id @default(autoincrement())
+  filmId  Int
+  actorId Int
+  film    Film  @relation(fields: [filmId], references: [id], onDelete: Cascade)
+  actor   Actor @relation(fields: [actorId], references: [id], onDelete: Cascade)
+
+  @@unique([filmId, actorId])
+  @@map("film_actors")
+}
+
+model FilmKeyword {
+  id        Int     @id @default(autoincrement())
+  filmId    Int
+  keywordId Int
+  film      Film    @relation(fields: [filmId], references: [id], onDelete: Cascade)
+  keyword   Keyword @relation(fields: [keywordId], references: [id], onDelete: Cascade)
+
+  @@unique([filmId, keywordId])
+  @@map("film_keywords")
+}
+
+model Episode {
+  id           Int      @id @default(autoincrement())
+  filmId       Int
+  episodeNumber Int     // Số tập (1, 2, 3, ...)
+  title        String?  // Tên tập phim
+  description  String?  @db.Text // Mô tả tập phim
+  linkM3u8     String?  // Link m3u8 để phát video
+  linkEmbed     String?  // Link embed để phát video
+  linkWebview  String?  // Link webview để phát video
+  duration     Int?     // Thời lượng (phút)
+  viewCount    Int      @default(0) // Số lượt xem
+  thumbnail    String?  // Ảnh thumbnail của tập
+  status       String   @default("active") // active, inactive
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  film         Film     @relation(fields: [filmId], references: [id], onDelete: Cascade)
+
+  @@unique([filmId, episodeNumber])
+  @@index([filmId])
+  @@index([episodeNumber])
+  @@index([status])
+  @@map("episodes")
+}
