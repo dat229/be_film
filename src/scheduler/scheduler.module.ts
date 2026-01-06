@@ -8,12 +8,3 @@ import { CrawlerModule } from '../crawler/crawler.module';
   providers: [SchedulerService],
 })
 export class SchedulerModule {}
-
-
-
-
-
-
-
-
-

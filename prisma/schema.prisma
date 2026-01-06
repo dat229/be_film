@@ -73,6 +73,7 @@ model Film {
   actors      FilmActor[]
   keywords    FilmKeyword[]
   episodes    Episode[]
+  dailyViews  FilmDailyView[]
 
   @@index([slug])
   @@index([year])
@@ -136,4 +137,17 @@ model Episode {
   @@index([episodeNumber])
   @@index([status])
   @@map("episodes")
+}
+
+model FilmDailyView {
+  id        Int      @id @default(autoincrement())
+  filmId    Int
+  date      DateTime @db.Date // Ngày (chỉ lưu date, không có time)
+  viewCount Int      @default(0) // Số lượt xem trong ngày
+  film      Film     @relation(fields: [filmId], references: [id], onDelete: Cascade)
+
+  @@unique([filmId, date])
+  @@index([filmId])
+  @@index([date])
+  @@map("film_daily_views")
 }

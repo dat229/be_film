@@ -332,6 +332,7 @@ export type FilmWhereInput = {
   actors?: Prisma.FilmActorListRelationFilter
   keywords?: Prisma.FilmKeywordListRelationFilter
   episodes?: Prisma.EpisodeListRelationFilter
+  dailyViews?: Prisma.FilmDailyViewListRelationFilter
 }
 
 export type FilmOrderByWithRelationInput = {
@@ -356,6 +357,7 @@ export type FilmOrderByWithRelationInput = {
   actors?: Prisma.FilmActorOrderByRelationAggregateInput
   keywords?: Prisma.FilmKeywordOrderByRelationAggregateInput
   episodes?: Prisma.EpisodeOrderByRelationAggregateInput
+  dailyViews?: Prisma.FilmDailyViewOrderByRelationAggregateInput
   _relevance?: Prisma.FilmOrderByRelevanceInput
 }
 
@@ -384,6 +386,7 @@ export type FilmWhereUniqueInput = Prisma.AtLeast<{
   actors?: Prisma.FilmActorListRelationFilter
   keywords?: Prisma.FilmKeywordListRelationFilter
   episodes?: Prisma.EpisodeListRelationFilter
+  dailyViews?: Prisma.FilmDailyViewListRelationFilter
 }, "id" | "slug">
 
 export type FilmOrderByWithAggregationInput = {
@@ -455,6 +458,7 @@ export type FilmCreateInput = {
   actors?: Prisma.FilmActorCreateNestedManyWithoutFilmInput
   keywords?: Prisma.FilmKeywordCreateNestedManyWithoutFilmInput
   episodes?: Prisma.EpisodeCreateNestedManyWithoutFilmInput
+  dailyViews?: Prisma.FilmDailyViewCreateNestedManyWithoutFilmInput
 }
 
 export type FilmUncheckedCreateInput = {
@@ -479,6 +483,7 @@ export type FilmUncheckedCreateInput = {
   actors?: Prisma.FilmActorUncheckedCreateNestedManyWithoutFilmInput
   keywords?: Prisma.FilmKeywordUncheckedCreateNestedManyWithoutFilmInput
   episodes?: Prisma.EpisodeUncheckedCreateNestedManyWithoutFilmInput
+  dailyViews?: Prisma.FilmDailyViewUncheckedCreateNestedManyWithoutFilmInput
 }
 
 export type FilmUpdateInput = {
@@ -502,6 +507,7 @@ export type FilmUpdateInput = {
   actors?: Prisma.FilmActorUpdateManyWithoutFilmNestedInput
   keywords?: Prisma.FilmKeywordUpdateManyWithoutFilmNestedInput
   episodes?: Prisma.EpisodeUpdateManyWithoutFilmNestedInput
+  dailyViews?: Prisma.FilmDailyViewUpdateManyWithoutFilmNestedInput
 }
 
 export type FilmUncheckedUpdateInput = {
@@ -526,6 +532,7 @@ export type FilmUncheckedUpdateInput = {
   actors?: Prisma.FilmActorUncheckedUpdateManyWithoutFilmNestedInput
   keywords?: Prisma.FilmKeywordUncheckedUpdateManyWithoutFilmNestedInput
   episodes?: Prisma.EpisodeUncheckedUpdateManyWithoutFilmNestedInput
+  dailyViews?: Prisma.FilmDailyViewUncheckedUpdateManyWithoutFilmNestedInput
 }
 
 export type FilmCreateManyInput = {
@@ -746,6 +753,20 @@ export type FilmUpdateOneRequiredWithoutEpisodesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FilmUpdateToOneWithWhereWithoutEpisodesInput, Prisma.FilmUpdateWithoutEpisodesInput>, Prisma.FilmUncheckedUpdateWithoutEpisodesInput>
 }
 
+export type FilmCreateNestedOneWithoutDailyViewsInput = {
+  create?: Prisma.XOR<Prisma.FilmCreateWithoutDailyViewsInput, Prisma.FilmUncheckedCreateWithoutDailyViewsInput>
+  connectOrCreate?: Prisma.FilmCreateOrConnectWithoutDailyViewsInput
+  connect?: Prisma.FilmWhereUniqueInput
+}
+
+export type FilmUpdateOneRequiredWithoutDailyViewsNestedInput = {
+  create?: Prisma.XOR<Prisma.FilmCreateWithoutDailyViewsInput, Prisma.FilmUncheckedCreateWithoutDailyViewsInput>
+  connectOrCreate?: Prisma.FilmCreateOrConnectWithoutDailyViewsInput
+  upsert?: Prisma.FilmUpsertWithoutDailyViewsInput
+  connect?: Prisma.FilmWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FilmUpdateToOneWithWhereWithoutDailyViewsInput, Prisma.FilmUpdateWithoutDailyViewsInput>, Prisma.FilmUncheckedUpdateWithoutDailyViewsInput>
+}
+
 export type FilmCreateWithoutCategoriesInput = {
   title: string
   slug: string
@@ -766,6 +787,7 @@ export type FilmCreateWithoutCategoriesInput = {
   actors?: Prisma.FilmActorCreateNestedManyWithoutFilmInput
   keywords?: Prisma.FilmKeywordCreateNestedManyWithoutFilmInput
   episodes?: Prisma.EpisodeCreateNestedManyWithoutFilmInput
+  dailyViews?: Prisma.FilmDailyViewCreateNestedManyWithoutFilmInput
 }
 
 export type FilmUncheckedCreateWithoutCategoriesInput = {
@@ -789,6 +811,7 @@ export type FilmUncheckedCreateWithoutCategoriesInput = {
   actors?: Prisma.FilmActorUncheckedCreateNestedManyWithoutFilmInput
   keywords?: Prisma.FilmKeywordUncheckedCreateNestedManyWithoutFilmInput
   episodes?: Prisma.EpisodeUncheckedCreateNestedManyWithoutFilmInput
+  dailyViews?: Prisma.FilmDailyViewUncheckedCreateNestedManyWithoutFilmInput
 }
 
 export type FilmCreateOrConnectWithoutCategoriesInput = {
@@ -827,6 +850,7 @@ export type FilmUpdateWithoutCategoriesInput = {
   actors?: Prisma.FilmActorUpdateManyWithoutFilmNestedInput
   keywords?: Prisma.FilmKeywordUpdateManyWithoutFilmNestedInput
   episodes?: Prisma.EpisodeUpdateManyWithoutFilmNestedInput
+  dailyViews?: Prisma.FilmDailyViewUpdateManyWithoutFilmNestedInput
 }
 
 export type FilmUncheckedUpdateWithoutCategoriesInput = {
@@ -850,6 +874,7 @@ export type FilmUncheckedUpdateWithoutCategoriesInput = {
   actors?: Prisma.FilmActorUncheckedUpdateManyWithoutFilmNestedInput
   keywords?: Prisma.FilmKeywordUncheckedUpdateManyWithoutFilmNestedInput
   episodes?: Prisma.EpisodeUncheckedUpdateManyWithoutFilmNestedInput
+  dailyViews?: Prisma.FilmDailyViewUncheckedUpdateManyWithoutFilmNestedInput
 }
 
 export type FilmCreateWithoutActorsInput = {
@@ -872,6 +897,7 @@ export type FilmCreateWithoutActorsInput = {
   categories?: Prisma.FilmCategoryCreateNestedManyWithoutFilmInput
   keywords?: Prisma.FilmKeywordCreateNestedManyWithoutFilmInput
   episodes?: Prisma.EpisodeCreateNestedManyWithoutFilmInput
+  dailyViews?: Prisma.FilmDailyViewCreateNestedManyWithoutFilmInput
 }
 
 export type FilmUncheckedCreateWithoutActorsInput = {
@@ -895,6 +921,7 @@ export type FilmUncheckedCreateWithoutActorsInput = {
   categories?: Prisma.FilmCategoryUncheckedCreateNestedManyWithoutFilmInput
   keywords?: Prisma.FilmKeywordUncheckedCreateNestedManyWithoutFilmInput
   episodes?: Prisma.EpisodeUncheckedCreateNestedManyWithoutFilmInput
+  dailyViews?: Prisma.FilmDailyViewUncheckedCreateNestedManyWithoutFilmInput
 }
 
 export type FilmCreateOrConnectWithoutActorsInput = {
@@ -933,6 +960,7 @@ export type FilmUpdateWithoutActorsInput = {
   categories?: Prisma.FilmCategoryUpdateManyWithoutFilmNestedInput
   keywords?: Prisma.FilmKeywordUpdateManyWithoutFilmNestedInput
   episodes?: Prisma.EpisodeUpdateManyWithoutFilmNestedInput
+  dailyViews?: Prisma.FilmDailyViewUpdateManyWithoutFilmNestedInput
 }
 
 export type FilmUncheckedUpdateWithoutActorsInput = {
@@ -956,6 +984,7 @@ export type FilmUncheckedUpdateWithoutActorsInput = {
   categories?: Prisma.FilmCategoryUncheckedUpdateManyWithoutFilmNestedInput
   keywords?: Prisma.FilmKeywordUncheckedUpdateManyWithoutFilmNestedInput
   episodes?: Prisma.EpisodeUncheckedUpdateManyWithoutFilmNestedInput
+  dailyViews?: Prisma.FilmDailyViewUncheckedUpdateManyWithoutFilmNestedInput
 }
 
 export type FilmCreateWithoutKeywordsInput = {
@@ -978,6 +1007,7 @@ export type FilmCreateWithoutKeywordsInput = {
   categories?: Prisma.FilmCategoryCreateNestedManyWithoutFilmInput
   actors?: Prisma.FilmActorCreateNestedManyWithoutFilmInput
   episodes?: Prisma.EpisodeCreateNestedManyWithoutFilmInput
+  dailyViews?: Prisma.FilmDailyViewCreateNestedManyWithoutFilmInput
 }
 
 export type FilmUncheckedCreateWithoutKeywordsInput = {
@@ -1001,6 +1031,7 @@ export type FilmUncheckedCreateWithoutKeywordsInput = {
   categories?: Prisma.FilmCategoryUncheckedCreateNestedManyWithoutFilmInput
   actors?: Prisma.FilmActorUncheckedCreateNestedManyWithoutFilmInput
   episodes?: Prisma.EpisodeUncheckedCreateNestedManyWithoutFilmInput
+  dailyViews?: Prisma.FilmDailyViewUncheckedCreateNestedManyWithoutFilmInput
 }
 
 export type FilmCreateOrConnectWithoutKeywordsInput = {
@@ -1039,6 +1070,7 @@ export type FilmUpdateWithoutKeywordsInput = {
   categories?: Prisma.FilmCategoryUpdateManyWithoutFilmNestedInput
   actors?: Prisma.FilmActorUpdateManyWithoutFilmNestedInput
   episodes?: Prisma.EpisodeUpdateManyWithoutFilmNestedInput
+  dailyViews?: Prisma.FilmDailyViewUpdateManyWithoutFilmNestedInput
 }
 
 export type FilmUncheckedUpdateWithoutKeywordsInput = {
@@ -1062,6 +1094,7 @@ export type FilmUncheckedUpdateWithoutKeywordsInput = {
   categories?: Prisma.FilmCategoryUncheckedUpdateManyWithoutFilmNestedInput
   actors?: Prisma.FilmActorUncheckedUpdateManyWithoutFilmNestedInput
   episodes?: Prisma.EpisodeUncheckedUpdateManyWithoutFilmNestedInput
+  dailyViews?: Prisma.FilmDailyViewUncheckedUpdateManyWithoutFilmNestedInput
 }
 
 export type FilmCreateWithoutEpisodesInput = {
@@ -1084,6 +1117,7 @@ export type FilmCreateWithoutEpisodesInput = {
   categories?: Prisma.FilmCategoryCreateNestedManyWithoutFilmInput
   actors?: Prisma.FilmActorCreateNestedManyWithoutFilmInput
   keywords?: Prisma.FilmKeywordCreateNestedManyWithoutFilmInput
+  dailyViews?: Prisma.FilmDailyViewCreateNestedManyWithoutFilmInput
 }
 
 export type FilmUncheckedCreateWithoutEpisodesInput = {
@@ -1107,6 +1141,7 @@ export type FilmUncheckedCreateWithoutEpisodesInput = {
   categories?: Prisma.FilmCategoryUncheckedCreateNestedManyWithoutFilmInput
   actors?: Prisma.FilmActorUncheckedCreateNestedManyWithoutFilmInput
   keywords?: Prisma.FilmKeywordUncheckedCreateNestedManyWithoutFilmInput
+  dailyViews?: Prisma.FilmDailyViewUncheckedCreateNestedManyWithoutFilmInput
 }
 
 export type FilmCreateOrConnectWithoutEpisodesInput = {
@@ -1145,6 +1180,7 @@ export type FilmUpdateWithoutEpisodesInput = {
   categories?: Prisma.FilmCategoryUpdateManyWithoutFilmNestedInput
   actors?: Prisma.FilmActorUpdateManyWithoutFilmNestedInput
   keywords?: Prisma.FilmKeywordUpdateManyWithoutFilmNestedInput
+  dailyViews?: Prisma.FilmDailyViewUpdateManyWithoutFilmNestedInput
 }
 
 export type FilmUncheckedUpdateWithoutEpisodesInput = {
@@ -1168,6 +1204,117 @@ export type FilmUncheckedUpdateWithoutEpisodesInput = {
   categories?: Prisma.FilmCategoryUncheckedUpdateManyWithoutFilmNestedInput
   actors?: Prisma.FilmActorUncheckedUpdateManyWithoutFilmNestedInput
   keywords?: Prisma.FilmKeywordUncheckedUpdateManyWithoutFilmNestedInput
+  dailyViews?: Prisma.FilmDailyViewUncheckedUpdateManyWithoutFilmNestedInput
+}
+
+export type FilmCreateWithoutDailyViewsInput = {
+  title: string
+  slug: string
+  nameNormalized?: string | null
+  description?: string | null
+  poster?: string | null
+  thumbnail?: string | null
+  year?: number | null
+  duration?: number | null
+  rating?: number | null
+  viewCount?: number
+  status?: string
+  linkM3u8?: string | null
+  linkWebview?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  type?: string
+  categories?: Prisma.FilmCategoryCreateNestedManyWithoutFilmInput
+  actors?: Prisma.FilmActorCreateNestedManyWithoutFilmInput
+  keywords?: Prisma.FilmKeywordCreateNestedManyWithoutFilmInput
+  episodes?: Prisma.EpisodeCreateNestedManyWithoutFilmInput
+}
+
+export type FilmUncheckedCreateWithoutDailyViewsInput = {
+  id?: number
+  title: string
+  slug: string
+  nameNormalized?: string | null
+  description?: string | null
+  poster?: string | null
+  thumbnail?: string | null
+  year?: number | null
+  duration?: number | null
+  rating?: number | null
+  viewCount?: number
+  status?: string
+  linkM3u8?: string | null
+  linkWebview?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  type?: string
+  categories?: Prisma.FilmCategoryUncheckedCreateNestedManyWithoutFilmInput
+  actors?: Prisma.FilmActorUncheckedCreateNestedManyWithoutFilmInput
+  keywords?: Prisma.FilmKeywordUncheckedCreateNestedManyWithoutFilmInput
+  episodes?: Prisma.EpisodeUncheckedCreateNestedManyWithoutFilmInput
+}
+
+export type FilmCreateOrConnectWithoutDailyViewsInput = {
+  where: Prisma.FilmWhereUniqueInput
+  create: Prisma.XOR<Prisma.FilmCreateWithoutDailyViewsInput, Prisma.FilmUncheckedCreateWithoutDailyViewsInput>
+}
+
+export type FilmUpsertWithoutDailyViewsInput = {
+  update: Prisma.XOR<Prisma.FilmUpdateWithoutDailyViewsInput, Prisma.FilmUncheckedUpdateWithoutDailyViewsInput>
+  create: Prisma.XOR<Prisma.FilmCreateWithoutDailyViewsInput, Prisma.FilmUncheckedCreateWithoutDailyViewsInput>
+  where?: Prisma.FilmWhereInput
+}
+
+export type FilmUpdateToOneWithWhereWithoutDailyViewsInput = {
+  where?: Prisma.FilmWhereInput
+  data: Prisma.XOR<Prisma.FilmUpdateWithoutDailyViewsInput, Prisma.FilmUncheckedUpdateWithoutDailyViewsInput>
+}
+
+export type FilmUpdateWithoutDailyViewsInput = {
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  nameNormalized?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  poster?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  rating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  linkM3u8?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkWebview?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  categories?: Prisma.FilmCategoryUpdateManyWithoutFilmNestedInput
+  actors?: Prisma.FilmActorUpdateManyWithoutFilmNestedInput
+  keywords?: Prisma.FilmKeywordUpdateManyWithoutFilmNestedInput
+  episodes?: Prisma.EpisodeUpdateManyWithoutFilmNestedInput
+}
+
+export type FilmUncheckedUpdateWithoutDailyViewsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  nameNormalized?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  poster?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  rating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  linkM3u8?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkWebview?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  categories?: Prisma.FilmCategoryUncheckedUpdateManyWithoutFilmNestedInput
+  actors?: Prisma.FilmActorUncheckedUpdateManyWithoutFilmNestedInput
+  keywords?: Prisma.FilmKeywordUncheckedUpdateManyWithoutFilmNestedInput
+  episodes?: Prisma.EpisodeUncheckedUpdateManyWithoutFilmNestedInput
 }
 
 
@@ -1180,6 +1327,7 @@ export type FilmCountOutputType = {
   actors: number
   keywords: number
   episodes: number
+  dailyViews: number
 }
 
 export type FilmCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1187,6 +1335,7 @@ export type FilmCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   actors?: boolean | FilmCountOutputTypeCountActorsArgs
   keywords?: boolean | FilmCountOutputTypeCountKeywordsArgs
   episodes?: boolean | FilmCountOutputTypeCountEpisodesArgs
+  dailyViews?: boolean | FilmCountOutputTypeCountDailyViewsArgs
 }
 
 /**
@@ -1227,6 +1376,13 @@ export type FilmCountOutputTypeCountEpisodesArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.EpisodeWhereInput
 }
 
+/**
+ * FilmCountOutputType without action
+ */
+export type FilmCountOutputTypeCountDailyViewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FilmDailyViewWhereInput
+}
+
 
 export type FilmSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1250,6 +1406,7 @@ export type FilmSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   actors?: boolean | Prisma.Film$actorsArgs<ExtArgs>
   keywords?: boolean | Prisma.Film$keywordsArgs<ExtArgs>
   episodes?: boolean | Prisma.Film$episodesArgs<ExtArgs>
+  dailyViews?: boolean | Prisma.Film$dailyViewsArgs<ExtArgs>
   _count?: boolean | Prisma.FilmCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["film"]>
 
@@ -1281,6 +1438,7 @@ export type FilmInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   actors?: boolean | Prisma.Film$actorsArgs<ExtArgs>
   keywords?: boolean | Prisma.Film$keywordsArgs<ExtArgs>
   episodes?: boolean | Prisma.Film$episodesArgs<ExtArgs>
+  dailyViews?: boolean | Prisma.Film$dailyViewsArgs<ExtArgs>
   _count?: boolean | Prisma.FilmCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1291,6 +1449,7 @@ export type $FilmPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     actors: Prisma.$FilmActorPayload<ExtArgs>[]
     keywords: Prisma.$FilmKeywordPayload<ExtArgs>[]
     episodes: Prisma.$EpisodePayload<ExtArgs>[]
+    dailyViews: Prisma.$FilmDailyViewPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1654,6 +1813,7 @@ export interface Prisma__FilmClient<T, Null = never, ExtArgs extends runtime.Typ
   actors<T extends Prisma.Film$actorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Film$actorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FilmActorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   keywords<T extends Prisma.Film$keywordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Film$keywordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FilmKeywordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   episodes<T extends Prisma.Film$episodesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Film$episodesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EpisodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  dailyViews<T extends Prisma.Film$dailyViewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Film$dailyViewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FilmDailyViewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2136,6 +2296,30 @@ export type Film$episodesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.EpisodeScalarFieldEnum | Prisma.EpisodeScalarFieldEnum[]
+}
+
+/**
+ * Film.dailyViews
+ */
+export type Film$dailyViewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FilmDailyView
+   */
+  select?: Prisma.FilmDailyViewSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FilmDailyView
+   */
+  omit?: Prisma.FilmDailyViewOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FilmDailyViewInclude<ExtArgs> | null
+  where?: Prisma.FilmDailyViewWhereInput
+  orderBy?: Prisma.FilmDailyViewOrderByWithRelationInput | Prisma.FilmDailyViewOrderByWithRelationInput[]
+  cursor?: Prisma.FilmDailyViewWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FilmDailyViewScalarFieldEnum | Prisma.FilmDailyViewScalarFieldEnum[]
 }
 
 /**

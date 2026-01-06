@@ -47,6 +47,10 @@ export class FilmFilterDto {
   search?: string;
 
   @IsOptional()
+  @IsEnum(['movie', 'tv'])
+  type?: string;
+
+  @IsOptional()
   @IsEnum(['createdAt', 'viewCount', 'rating', 'year', 'title'])
   sortBy?: string;
 

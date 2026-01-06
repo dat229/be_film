@@ -391,7 +391,8 @@ export const ModelName = {
   FilmCategory: 'FilmCategory',
   FilmActor: 'FilmActor',
   FilmKeyword: 'FilmKeyword',
-  Episode: 'Episode'
+  Episode: 'Episode',
+  FilmDailyView: 'FilmDailyView'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -407,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "category" | "actor" | "keyword" | "film" | "filmCategory" | "filmActor" | "filmKeyword" | "episode"
+    modelProps: "category" | "actor" | "keyword" | "film" | "filmCategory" | "filmActor" | "filmKeyword" | "episode" | "filmDailyView"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -939,6 +940,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    FilmDailyView: {
+      payload: Prisma.$FilmDailyViewPayload<ExtArgs>
+      fields: Prisma.FilmDailyViewFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FilmDailyViewFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilmDailyViewPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FilmDailyViewFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilmDailyViewPayload>
+        }
+        findFirst: {
+          args: Prisma.FilmDailyViewFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilmDailyViewPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FilmDailyViewFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilmDailyViewPayload>
+        }
+        findMany: {
+          args: Prisma.FilmDailyViewFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilmDailyViewPayload>[]
+        }
+        create: {
+          args: Prisma.FilmDailyViewCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilmDailyViewPayload>
+        }
+        createMany: {
+          args: Prisma.FilmDailyViewCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.FilmDailyViewDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilmDailyViewPayload>
+        }
+        update: {
+          args: Prisma.FilmDailyViewUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilmDailyViewPayload>
+        }
+        deleteMany: {
+          args: Prisma.FilmDailyViewDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FilmDailyViewUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.FilmDailyViewUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilmDailyViewPayload>
+        }
+        aggregate: {
+          args: Prisma.FilmDailyViewAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFilmDailyView>
+        }
+        groupBy: {
+          args: Prisma.FilmDailyViewGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FilmDailyViewGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FilmDailyViewCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FilmDailyViewCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1083,6 +1150,16 @@ export const EpisodeScalarFieldEnum = {
 } as const
 
 export type EpisodeScalarFieldEnum = (typeof EpisodeScalarFieldEnum)[keyof typeof EpisodeScalarFieldEnum]
+
+
+export const FilmDailyViewScalarFieldEnum = {
+  id: 'id',
+  filmId: 'filmId',
+  date: 'date',
+  viewCount: 'viewCount'
+} as const
+
+export type FilmDailyViewScalarFieldEnum = (typeof FilmDailyViewScalarFieldEnum)[keyof typeof FilmDailyViewScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1294,6 +1371,7 @@ export type GlobalOmitConfig = {
   filmActor?: Prisma.FilmActorOmit
   filmKeyword?: Prisma.FilmKeywordOmit
   episode?: Prisma.EpisodeOmit
+  filmDailyView?: Prisma.FilmDailyViewOmit
 }
 
 /* Types for Logging */

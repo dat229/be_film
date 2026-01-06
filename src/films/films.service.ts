@@ -41,15 +41,19 @@ export class FilmsService {
       actorId,
       keywordId,
       search,
+      type,
       sortBy = 'createdAt',
       sortOrder = 'desc',
     } = filters;
-
     const skip = (page - 1) * limit;
 
     const where: any = {
       status: 'active',
     };
+
+    if (type) {
+      where.type = type;
+    }
 
     if (year) {
       where.year = year;
@@ -131,7 +135,7 @@ export class FilmsService {
       }),
       this.prisma.film.count({ where }),
     ]);
-
+    
     return {
       data: films,
       pagination: {
@@ -222,60 +226,150 @@ export class FilmsService {
   }
 
   async incrementView(id: number) {
-    return this.prisma.film.update({
-      where: { id },
-      data: {
-        viewCount: { increment: 1 },
-      },
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return this.prisma.$transaction(async (tx) => {
+      await tx.film.update({
+        where: { id },
+        data: {
+          viewCount: { increment: 1 },
+        },
+      });
+
+      await tx.filmDailyView.upsert({
+        where: {
+          filmId_date: {
+            filmId: id,
+            date: today,
+          },
+        },
+        update: {
+          viewCount: { increment: 1 },
+        },
+        create: {
+          filmId: id,
+          date: today,
+          viewCount: 1,
+        },
+      });
+
+      return { success: true };
     });
   }
 
+  async getTrendingFilms() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const formatDateForMySQL = (date: Date): string => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    const trendingFilmsData = await this.prisma.$queryRaw<
+      Array<{ filmId: number; totalViews: bigint }>
+    >`
+      SELECT 
+        fdv.filmId,
+        SUM(fdv.viewCount) as totalViews
+      FROM film_daily_views fdv
+      WHERE DATE(fdv.date) >= DATE(${formatDateForMySQL(sevenDaysAgo)})
+        AND DATE(fdv.date) <= DATE(${formatDateForMySQL(today)})
+      GROUP BY fdv.filmId
+      ORDER BY totalViews DESC
+      LIMIT 12
+    `;
+    if (trendingFilmsData.length === 0) {
+      return [];
+    }
+
+    const viewsMap = new Map(
+      trendingFilmsData.map((item) => [item.filmId, Number(item.totalViews)]),
+    );
+
+    const filmIds = trendingFilmsData.map((item) => item.filmId);
+
+    const films = await this.prisma.film.findMany({
+      where: {
+        id: { in: filmIds },
+        status: 'active',
+      },
+      include: {
+        categories: { include: { category: true } },
+      },
+    });
+
+    // Sắp xếp lại films theo thứ tự totalViews từ cao xuống thấp
+    const filmsMap = new Map(films.map((film) => [film.id, film]));
+    const sortedFilms = filmIds
+      .map((id) => filmsMap.get(id))
+      .filter((film): film is NonNullable<typeof film> => film !== undefined)
+      .sort((a, b) => {
+        const viewsA = viewsMap.get(a.id) || 0;
+        const viewsB = viewsMap.get(b.id) || 0;
+        return viewsB - viewsA;
+      });
+
+    return sortedFilms;
+  }
+
   async getHomeFilms() {
-    const [featured, popular, latest, topRated] = await Promise.all([
-      // Featured films (có thể là phim nổi bật)
-      this.prisma.film.findMany({
-        where: { status: 'active' },
-        take: 10,
-        orderBy: { viewCount: 'desc' },
-        include: {
-          categories: { include: { category: true } },
-          actors: { include: { actor: true } },
-        },
-      }),
-      // xem nhiều nhất
-      this.prisma.film.findMany({
-        where: { status: 'active' },
-        take: 12,
-        orderBy: { viewCount: 'desc' },
-        include: {
-          categories: { include: { category: true } },
-        },
-      }),
-      // mới nhất
-      this.prisma.film.findMany({
-        where: { status: 'active' },
-        take: 12,
-        orderBy: { createdAt: 'desc' },
-        include: {
-          categories: { include: { category: true } },
-        },
-      }),
-      // đánh giá cao
-      this.prisma.film.findMany({
-        where: { status: 'active', rating: { gte: 7 } },
-        take: 12,
-        orderBy: { rating: 'desc' },
-        include: {
-          categories: { include: { category: true } },
-        },
-      }),
-    ]);
+    const [featured, popular, latest, topRated, trendingSeries] =
+      await Promise.all([
+        // phim nổi bật
+        this.prisma.film.findMany({
+          where: { status: 'active' },
+          take: 10,
+          orderBy: { viewCount: 'desc' },
+          include: {
+            categories: { include: { category: true } },
+            actors: { include: { actor: true } },
+          },
+        }),
+        // xem nhiều nhất
+        this.prisma.film.findMany({
+          where: { status: 'active' },
+          take: 12,
+          orderBy: { viewCount: 'desc' },
+          include: {
+            categories: { include: { category: true } },
+          },
+        }),
+        // mới nhất
+        this.prisma.film.findMany({
+          where: { status: 'active' },
+          take: 12,
+          orderBy: { createdAt: 'desc' },
+          include: {
+            categories: { include: { category: true } },
+          },
+        }),
+        // đánh giá cao
+        this.prisma.film.findMany({
+          where: { status: 'active', rating: { gte: 7 } },
+          take: 12,
+          orderBy: { rating: 'desc' },
+          include: {
+            categories: { include: { category: true } },
+          },
+        }),
+        // Phim thịnh hành (7 ngày gần nhất) - tính từ FilmDailyView
+        this.getTrendingFilms(),
+      ]);
 
     return {
       featured,
       popular,
       latest,
       topRated,
+      trendingSeries,
     };
   }
 }

@@ -57,3 +57,8 @@ export type FilmKeyword = Prisma.FilmKeywordModel
  * 
  */
 export type Episode = Prisma.EpisodeModel
+/**
+ * Model FilmDailyView
+ * 
+ */
+export type FilmDailyView = Prisma.FilmDailyViewModel

@@ -58,7 +58,8 @@ export const ModelName = {
   FilmCategory: 'FilmCategory',
   FilmActor: 'FilmActor',
   FilmKeyword: 'FilmKeyword',
-  Episode: 'Episode'
+  Episode: 'Episode',
+  FilmDailyView: 'FilmDailyView'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -182,6 +183,16 @@ export const EpisodeScalarFieldEnum = {
 } as const
 
 export type EpisodeScalarFieldEnum = (typeof EpisodeScalarFieldEnum)[keyof typeof EpisodeScalarFieldEnum]
+
+
+export const FilmDailyViewScalarFieldEnum = {
+  id: 'id',
+  filmId: 'filmId',
+  date: 'date',
+  viewCount: 'viewCount'
+} as const
+
+export type FilmDailyViewScalarFieldEnum = (typeof FilmDailyViewScalarFieldEnum)[keyof typeof FilmDailyViewScalarFieldEnum]
 
 
 export const SortOrder = {
