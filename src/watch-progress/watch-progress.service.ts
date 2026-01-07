@@ -6,12 +6,12 @@ import { CreateWatchProgressDto } from './dto';
 export class WatchProgressService {
   constructor(private prisma: PrismaService) {}
 
-  async upsert(createWatchProgressDto: CreateWatchProgressDto) { 
+  async upsert(createWatchProgressDto: CreateWatchProgressDto) {
     console.log('createWatchProgressDto', createWatchProgressDto);
     const { deviceId, filmId, episodeId, currentTime, duration, completed } =
       createWatchProgressDto;
 
-    // Tính toán completed dựa trên currentTime và duration (nếu >= 90% thì coi như completed)
+    // Tính toán completed dựa nếu xem >=90% phim
     const isCompleted =
       completed !== undefined
         ? completed
@@ -20,12 +20,45 @@ export class WatchProgressService {
     const episodeIdValue: number | null =
       episodeId !== undefined ? episodeId : null;
 
+    if (episodeIdValue === null) {
+      const existing = await this.prisma.watchProgress.findFirst({
+        where: {
+          deviceId,
+          filmId,
+          episodeId: null,
+        },
+      });
+
+      if (existing) {
+        return this.prisma.watchProgress.update({
+          where: { id: existing.id },
+          data: {
+            currentTime,
+            duration,
+            completed: isCompleted,
+            updatedAt: new Date(),
+          },
+        });
+      } else {
+        return this.prisma.watchProgress.create({
+          data: {
+            deviceId,
+            filmId,
+            episodeId: null,
+            currentTime,
+            duration,
+            completed: isCompleted,
+          },
+        });
+      }
+    }
+
     return this.prisma.watchProgress.upsert({
       where: {
         deviceId_filmId_episodeId: {
           deviceId,
           filmId,
-          episodeId: episodeIdValue as any,
+          episodeId: episodeIdValue,
         },
       },
       update: {
