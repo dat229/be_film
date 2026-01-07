@@ -79,6 +79,10 @@ model Film {
   @@index([year])
   @@index([viewCount])
   @@index([status])
+  @@index([status, viewCount])
+  @@index([status, createdAt])
+  @@index([status, rating])
+  @@index([status, type])
   @@map("films")
 }
 

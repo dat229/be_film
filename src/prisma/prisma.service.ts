@@ -11,7 +11,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
       connectionLimit: 50,
-      port: 3306,
+      port: Number(process.env.DATABASE_PORT) || 3306,
     });
     super({ adapter });
   }

@@ -127,10 +127,32 @@ export class FilmsService {
         orderBy: {
           [safeSortBy]: sortOrder === 'asc' ? 'asc' : 'desc',
         },
-        include: {
-          categories: { include: { category: true } },
-          actors: { include: { actor: true } },
-          keywords: { include: { keyword: true } },
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          poster: true,
+          thumbnail: true,
+          year: true,
+          duration: true,
+          rating: true,
+          viewCount: true,
+          type: true,
+          description: true,
+          createdAt: true,
+          updatedAt: true,
+          categories: {
+            select: {
+              category: {
+                select: {
+                  id: true,
+                  name: true,
+                  type: true,
+                  slug: true,
+                },
+              },
+            },
+          },
         },
       }),
       this.prisma.film.count({ where }),
@@ -301,8 +323,32 @@ export class FilmsService {
         id: { in: filmIds },
         status: 'active',
       },
-      include: {
-        categories: { include: { category: true } },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        poster: true,
+        thumbnail: true,
+        year: true,
+        duration: true,
+        rating: true,
+        viewCount: true,
+        type: true,
+        description: true,
+        createdAt: true,
+        updatedAt: true,
+        categories: {
+          select: {
+            category: {
+              select: {
+                id: true,
+                name: true,
+                type: true,
+                slug: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -321,6 +367,34 @@ export class FilmsService {
   }
 
   async getHomeFilms() {
+    const listSelect = {
+      id: true,
+      title: true,
+      slug: true,
+      poster: true,
+      thumbnail: true,
+      year: true,
+      duration: true,
+      rating: true,
+      viewCount: true,
+      type: true,
+      description: true,
+      createdAt: true,
+      updatedAt: true,
+      categories: {
+        select: {
+          category: {
+            select: {
+              id: true,
+              name: true,
+              type: true,
+              slug: true,
+            },
+          },
+        },
+      },
+    };
+
     const [featured, popular, latest, topRated, trendingSeries] =
       await Promise.all([
         // phim nổi bật
@@ -328,37 +402,28 @@ export class FilmsService {
           where: { status: 'active' },
           take: 10,
           orderBy: { viewCount: 'desc' },
-          include: {
-            categories: { include: { category: true } },
-            actors: { include: { actor: true } },
-          },
+          select: listSelect,
         }),
         // xem nhiều nhất
         this.prisma.film.findMany({
           where: { status: 'active' },
           take: 12,
           orderBy: { viewCount: 'desc' },
-          include: {
-            categories: { include: { category: true } },
-          },
+          select: listSelect,
         }),
         // mới nhất
         this.prisma.film.findMany({
           where: { status: 'active' },
           take: 12,
           orderBy: { createdAt: 'desc' },
-          include: {
-            categories: { include: { category: true } },
-          },
+          select: listSelect,
         }),
         // đánh giá cao
         this.prisma.film.findMany({
           where: { status: 'active', rating: { gte: 7 } },
           take: 12,
           orderBy: { rating: 'desc' },
-          include: {
-            categories: { include: { category: true } },
-          },
+          select: listSelect,
         }),
         // Phim thịnh hành (7 ngày gần nhất) - tính từ FilmDailyView
         this.getTrendingFilms(),
