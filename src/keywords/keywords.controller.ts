@@ -43,13 +43,3 @@ export class KeywordsController {
     return this.keywordsService.remove(id);
   }
 }
-
-
-
-
-
-
-
-
-
-

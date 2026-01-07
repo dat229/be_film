@@ -10,16 +10,3 @@ import { PrismaModule } from '../prisma/prisma.module';
   exports: [KeywordsService],
 })
 export class KeywordsModule {}
-
-
-
-
-
-
-
-
-
-
-
-
-

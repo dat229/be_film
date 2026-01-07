@@ -7,7 +7,6 @@ export class WatchProgressService {
   constructor(private prisma: PrismaService) {}
 
   async upsert(createWatchProgressDto: CreateWatchProgressDto) {
-    console.log('createWatchProgressDto', createWatchProgressDto);
     const { deviceId, filmId, episodeId, currentTime, duration, completed } =
       createWatchProgressDto;
 

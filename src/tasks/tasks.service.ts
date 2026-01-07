@@ -44,7 +44,7 @@ export class TasksService {
       page++;
     }
 
-    console.log(`✅ Crawled ${crawled} movies`);
+    console.log(`Crawled ${crawled} movies`);
   }
 
   private async crawlDetail(slug: string) {
@@ -109,7 +109,7 @@ export class TasksService {
       console.log(`🎬 Saved: ${movie.name}`);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Unknown error';
-      console.error(`❌ Failed to crawl slug ${slug}: ${message}`);
+      console.error(`Failed to crawl slug ${slug}: ${message}`);
     }
   }
 }

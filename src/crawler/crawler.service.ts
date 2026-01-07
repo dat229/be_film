@@ -94,7 +94,7 @@ export class CrawlerService {
   }
 
   async randomFilmCountryFromCategory() {
-    // 1. Lấy tất cả category type = country
+    // Lấy tất cả category type = country
     const countries = await this.prisma.category.findMany({
       where: { type: 'country' },
       select: { id: true },
@@ -104,7 +104,7 @@ export class CrawlerService {
       throw new Error('Không có category type = country');
     }
 
-    // 2. Lấy tất cả film
+    // Lấy tất cả film
     const films = await this.prisma.film.findMany({
       select: { id: true },
     });
@@ -113,7 +113,7 @@ export class CrawlerService {
       const randomCountry =
         countries[Math.floor(Math.random() * countries.length)];
 
-      // 3. Xoá country cũ (nếu có)
+      // Xoá country cũ (nếu có)
       await this.prisma.filmCategory.deleteMany({
         where: {
           filmId: film.id,
@@ -123,7 +123,7 @@ export class CrawlerService {
         },
       });
 
-      // 4. Gán country mới
+      // Gán country mới
       await this.prisma.filmCategory.create({
         data: {
           filmId: film.id,
@@ -299,15 +299,12 @@ export class CrawlerService {
 
       const $ = cheerio.load(response.data);
 
-      // Ví dụ: Parse HTML và extract data
-      // Bạn cần customize phần này theo cấu trúc HTML của website bạn crawl
       const title = $('h1').first().text().trim();
       const description = $('.description').text().trim();
       const poster = $('.poster img').attr('src');
       const year = parseInt($('.year').text()) || undefined;
       const rating = parseFloat($('.rating').text()) || undefined;
 
-      // Extract categories, actors, keywords từ HTML
       const categories: string[] = [];
       $('.categories a').each((_, el) => {
         categories.push($(el).text().trim());
@@ -318,11 +315,9 @@ export class CrawlerService {
         actors.push($(el).text().trim());
       });
 
-      // Extract video links
       const linkM3u8 = $('[data-type="m3u8"]').attr('data-url');
       const linkWebview = $('[data-type="webview"]').attr('data-url');
 
-      // Lưu vào database
       await this.crawlAndSaveFilm({
         title,
         description,
