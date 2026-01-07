@@ -59,7 +59,8 @@ export const ModelName = {
   FilmActor: 'FilmActor',
   FilmKeyword: 'FilmKeyword',
   Episode: 'Episode',
-  FilmDailyView: 'FilmDailyView'
+  FilmDailyView: 'FilmDailyView',
+  WatchProgress: 'WatchProgress'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -195,6 +196,21 @@ export const FilmDailyViewScalarFieldEnum = {
 export type FilmDailyViewScalarFieldEnum = (typeof FilmDailyViewScalarFieldEnum)[keyof typeof FilmDailyViewScalarFieldEnum]
 
 
+export const WatchProgressScalarFieldEnum = {
+  id: 'id',
+  deviceId: 'deviceId',
+  filmId: 'filmId',
+  episodeId: 'episodeId',
+  currentTime: 'currentTime',
+  duration: 'duration',
+  completed: 'completed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WatchProgressScalarFieldEnum = (typeof WatchProgressScalarFieldEnum)[keyof typeof WatchProgressScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -266,4 +282,11 @@ export const EpisodeOrderByRelevanceFieldEnum = {
 } as const
 
 export type EpisodeOrderByRelevanceFieldEnum = (typeof EpisodeOrderByRelevanceFieldEnum)[keyof typeof EpisodeOrderByRelevanceFieldEnum]
+
+
+export const WatchProgressOrderByRelevanceFieldEnum = {
+  deviceId: 'deviceId'
+} as const
+
+export type WatchProgressOrderByRelevanceFieldEnum = (typeof WatchProgressOrderByRelevanceFieldEnum)[keyof typeof WatchProgressOrderByRelevanceFieldEnum]
 

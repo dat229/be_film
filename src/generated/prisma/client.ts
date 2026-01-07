@@ -82,3 +82,8 @@ export type Episode = Prisma.EpisodeModel
  * 
  */
 export type FilmDailyView = Prisma.FilmDailyViewModel
+/**
+ * Model WatchProgress
+ * 
+ */
+export type WatchProgress = Prisma.WatchProgressModel

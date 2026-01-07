@@ -392,7 +392,8 @@ export const ModelName = {
   FilmActor: 'FilmActor',
   FilmKeyword: 'FilmKeyword',
   Episode: 'Episode',
-  FilmDailyView: 'FilmDailyView'
+  FilmDailyView: 'FilmDailyView',
+  WatchProgress: 'WatchProgress'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "category" | "actor" | "keyword" | "film" | "filmCategory" | "filmActor" | "filmKeyword" | "episode" | "filmDailyView"
+    modelProps: "category" | "actor" | "keyword" | "film" | "filmCategory" | "filmActor" | "filmKeyword" | "episode" | "filmDailyView" | "watchProgress"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1006,6 +1007,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    WatchProgress: {
+      payload: Prisma.$WatchProgressPayload<ExtArgs>
+      fields: Prisma.WatchProgressFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WatchProgressFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WatchProgressPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WatchProgressFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WatchProgressPayload>
+        }
+        findFirst: {
+          args: Prisma.WatchProgressFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WatchProgressPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WatchProgressFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WatchProgressPayload>
+        }
+        findMany: {
+          args: Prisma.WatchProgressFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WatchProgressPayload>[]
+        }
+        create: {
+          args: Prisma.WatchProgressCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WatchProgressPayload>
+        }
+        createMany: {
+          args: Prisma.WatchProgressCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.WatchProgressDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WatchProgressPayload>
+        }
+        update: {
+          args: Prisma.WatchProgressUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WatchProgressPayload>
+        }
+        deleteMany: {
+          args: Prisma.WatchProgressDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WatchProgressUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.WatchProgressUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WatchProgressPayload>
+        }
+        aggregate: {
+          args: Prisma.WatchProgressAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWatchProgress>
+        }
+        groupBy: {
+          args: Prisma.WatchProgressGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WatchProgressGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WatchProgressCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WatchProgressCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1162,6 +1229,21 @@ export const FilmDailyViewScalarFieldEnum = {
 export type FilmDailyViewScalarFieldEnum = (typeof FilmDailyViewScalarFieldEnum)[keyof typeof FilmDailyViewScalarFieldEnum]
 
 
+export const WatchProgressScalarFieldEnum = {
+  id: 'id',
+  deviceId: 'deviceId',
+  filmId: 'filmId',
+  episodeId: 'episodeId',
+  currentTime: 'currentTime',
+  duration: 'duration',
+  completed: 'completed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WatchProgressScalarFieldEnum = (typeof WatchProgressScalarFieldEnum)[keyof typeof WatchProgressScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1235,6 +1317,13 @@ export const EpisodeOrderByRelevanceFieldEnum = {
 export type EpisodeOrderByRelevanceFieldEnum = (typeof EpisodeOrderByRelevanceFieldEnum)[keyof typeof EpisodeOrderByRelevanceFieldEnum]
 
 
+export const WatchProgressOrderByRelevanceFieldEnum = {
+  deviceId: 'deviceId'
+} as const
+
+export type WatchProgressOrderByRelevanceFieldEnum = (typeof WatchProgressOrderByRelevanceFieldEnum)[keyof typeof WatchProgressOrderByRelevanceFieldEnum]
+
+
 
 /**
  * Field references
@@ -1266,6 +1355,13 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 /**
@@ -1372,6 +1468,7 @@ export type GlobalOmitConfig = {
   filmKeyword?: Prisma.FilmKeywordOmit
   episode?: Prisma.EpisodeOmit
   filmDailyView?: Prisma.FilmDailyViewOmit
+  watchProgress?: Prisma.WatchProgressOmit
 }
 
 /* Types for Logging */

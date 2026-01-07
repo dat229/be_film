@@ -9,6 +9,7 @@ import { KeywordsModule } from './keywords/keywords.module';
 import { CrawlerModule } from './crawler/crawler.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
 import { TasksModule } from './tasks/tasks.module';
+import { WatchProgressModule } from './watch-progress/watch-progress.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
@@ -22,6 +23,7 @@ import { ConfigModule } from '@nestjs/config';
     CrawlerModule,
     SchedulerModule,
     TasksModule,
+    WatchProgressModule,
   ],
   controllers: [AppController],
   providers: [AppService],

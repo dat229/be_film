@@ -74,6 +74,7 @@ model Film {
   keywords    FilmKeyword[]
   episodes    Episode[]
   dailyViews  FilmDailyView[]
+  watchProgress WatchProgress[]
 
   @@index([slug])
   @@index([year])
@@ -140,6 +141,7 @@ model Episode {
   @@index([filmId])
   @@index([episodeNumber])
   @@index([status])
+  watchProgress WatchProgress[]
   @@map("episodes")
 }
 
@@ -154,4 +156,24 @@ model FilmDailyView {
   @@index([filmId])
   @@index([date])
   @@map("film_daily_views")
+}
+
+model WatchProgress {
+  id            Int       @id @default(autoincrement())
+  deviceId      String    // Identifier duy nhất cho thiết bị/browser
+  filmId        Int
+  episodeId     Int?      // null cho phim lẻ, có giá trị cho phim bộ
+  currentTime   Float     @default(0) // Thời gian hiện tại (giây)
+  duration      Float     @default(0) // Tổng thời lượng (giây)
+  completed     Boolean   @default(false) // Đã xem xong chưa
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  film          Film      @relation(fields: [filmId], references: [id], onDelete: Cascade)
+  episode       Episode? @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+
+  @@unique([deviceId, filmId, episodeId])
+  @@index([deviceId])
+  @@index([filmId])
+  @@index([episodeId])
+  @@map("watch_progress")
 }
