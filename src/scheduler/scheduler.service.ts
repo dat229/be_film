@@ -5,13 +5,13 @@ import {
   OnModuleDestroy,
 } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { CrawlerService } from '../crawler/crawler.service';
+import { TasksService } from 'src/tasks/tasks.service';
 
 @Injectable()
 export class SchedulerService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(SchedulerService.name);
 
-  constructor(private crawlerService: CrawlerService) {}
+  constructor(private tasksService: TasksService) {}
 
   onModuleInit() {
     this.logger.log('Scheduler service initialized');
@@ -21,69 +21,14 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
     this.logger.log('Scheduler service destroyed');
   }
 
-  /**
-   * Chạy crawler mỗi giờ
-   */
-  @Cron(CronExpression.EVERY_HOUR)
+  @Cron(CronExpression.EVERY_DAY_AT_2AM)
   async handleHourlyCrawl() {
-    this.logger.log('Running hourly crawl...');
+    this.logger.log('Running crawl...');
     try {
-      // Thêm logic crawl ở đây
-      // Ví dụ: crawl các phim mới nhất
-      const urlsToCrawl = [
-        // Add URLs to crawl hourly
-      ];
-
-      if (urlsToCrawl.length > 0) {
-        await this.crawlerService.crawlMultipleUrls(urlsToCrawl);
-        this.logger.log('Hourly crawl completed');
-      }
+      await this.tasksService.crawlMovies(10);
+      this.logger.log('Crawl completed');
     } catch (error) {
-      this.logger.error('Error in hourly crawl:', error);
-    }
-  }
-
-  /**
-   * Chạy crawler mỗi ngày lúc 2 giờ sáng
-   */
-  @Cron('0 2 * * *')
-  async handleDailyCrawl() {
-    this.logger.log('Running daily crawl...');
-    try {
-      // Thêm logic crawl ở đây
-      // Ví dụ: crawl toàn bộ danh sách phim
-      const urlsToCrawl = [
-        // Add URLs to crawl daily
-      ];
-
-      if (urlsToCrawl.length > 0) {
-        await this.crawlerService.crawlMultipleUrls(urlsToCrawl);
-        this.logger.log('Daily crawl completed');
-      }
-    } catch (error) {
-      this.logger.error('Error in daily crawl:', error);
-    }
-  }
-
-  /**
-   * Chạy crawler mỗi 30 phút
-   */
-  @Cron('*/30 * * * *')
-  async handleFrequentCrawl() {
-    this.logger.log('Running frequent crawl...');
-    try {
-      // Thêm logic crawl ở đây
-      // Ví dụ: crawl các phim hot/trending
-      const urlsToCrawl = [
-        // Add URLs to crawl frequently
-      ];
-
-      if (urlsToCrawl.length > 0) {
-        await this.crawlerService.crawlMultipleUrls(urlsToCrawl);
-        this.logger.log('Frequent crawl completed');
-      }
-    } catch (error) {
-      this.logger.error('Error in frequent crawl:', error);
+      this.logger.error('Error crawling:', error);
     }
   }
 }
