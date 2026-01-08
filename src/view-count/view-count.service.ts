@@ -152,7 +152,7 @@ export class ViewCountService {
       const { views } = pendingData;
 
       if (!views || views.length === 0) {
-        await client.del(pendingKey);
+        await this.cacheService.delete(pendingKey);
         return true;
       }
 

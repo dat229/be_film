@@ -63,7 +63,6 @@ export class TasksService {
         return;
       }
 
-      // ===== CLEAN DATA =====
       const cleanArray = (arr?: (string | null)[]) =>
         arr?.map((v) => v?.trim())?.filter((v): v is string => !!v);
 
@@ -106,7 +105,7 @@ export class TasksService {
         type: movie.tmdb?.type || 'movie',
       });
 
-      console.log(`🎬 Saved: ${movie.name}`);
+      console.log(`Saved: ${movie.name}`);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Unknown error';
       console.error(`Failed to crawl slug ${slug}: ${message}`);

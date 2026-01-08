@@ -21,7 +21,8 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
     this.logger.log('Scheduler service destroyed');
   }
 
-  @Cron(CronExpression.EVERY_DAY_AT_2AM)
+  // @Cron(CronExpression.EVERY_DAY_AT_2AM)
+  @Cron(CronExpression.EVERY_10_SECONDS)
   async handleHourlyCrawl() {
     this.logger.log('Running crawl...');
     try {
