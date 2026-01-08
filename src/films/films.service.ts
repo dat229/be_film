@@ -1,15 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateFilmDto, UpdateFilmDto, FilmFilterDto } from './dto';
+import { CacheService } from '../cache/cache.service';
+import { ViewCountService } from '../view-count/view-count.service';
 
 @Injectable()
 export class FilmsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private cacheService: CacheService,
+    private viewCountService: ViewCountService,
+  ) {}
 
   async create(createFilmDto: CreateFilmDto) {
     const { categories, actors, keywords, ...filmData } = createFilmDto;
 
-    return this.prisma.film.create({
+    const film = await this.prisma.film.create({
       data: {
         ...filmData,
         categories: {
@@ -28,6 +34,11 @@ export class FilmsService {
         keywords: { include: { keyword: true } },
       },
     });
+
+    await this.cacheService.delete('films:home');
+    await this.cacheService.delete('films:trending:7days');
+
+    return film;
   }
 
   async findAll(filters: FilmFilterDto) {
@@ -157,7 +168,7 @@ export class FilmsService {
       }),
       this.prisma.film.count({ where }),
     ]);
-    
+
     return {
       data: films,
       pagination: {
@@ -170,7 +181,14 @@ export class FilmsService {
   }
 
   async findOne(id: number) {
-    return this.prisma.film.findUnique({
+    const cacheKey = `film:${id}`;
+
+    const cached = await this.cacheService.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    const film = await this.prisma.film.findUnique({
       where: { id },
       include: {
         categories: { include: { category: true } },
@@ -182,10 +200,23 @@ export class FilmsService {
         },
       },
     });
+
+    if (film) {
+      await this.cacheService.set(cacheKey, film, 3600);
+    }
+
+    return film;
   }
 
   async findBySlug(slug: string) {
-    return this.prisma.film.findUnique({
+    const cacheKey = `film:slug:${slug}`;
+
+    const cached = await this.cacheService.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    const film = await this.prisma.film.findUnique({
       where: { slug },
       include: {
         categories: { include: { category: true } },
@@ -197,12 +228,25 @@ export class FilmsService {
         },
       },
     });
+
+    if (film) {
+      await this.cacheService.set(cacheKey, film, 3600);
+      if (film.id) {
+        await this.cacheService.set(`film:${film.id}`, film, 3600);
+      }
+    }
+
+    return film;
   }
 
   async update(id: number, updateFilmDto: UpdateFilmDto) {
     const { categories, actors, keywords, ...filmData } = updateFilmDto;
 
-    // Xóa các quan hệ cũ nếu có
+    const existingFilm = await this.prisma.film.findUnique({
+      where: { id },
+      select: { slug: true },
+    });
+
     if (categories !== undefined) {
       await this.prisma.filmCategory.deleteMany({ where: { filmId: id } });
     }
@@ -213,7 +257,7 @@ export class FilmsService {
       await this.prisma.filmKeyword.deleteMany({ where: { filmId: id } });
     }
 
-    return this.prisma.film.update({
+    const film = await this.prisma.film.update({
       where: { id },
       data: {
         ...filmData,
@@ -239,48 +283,53 @@ export class FilmsService {
         keywords: { include: { keyword: true } },
       },
     });
+
+    await this.cacheService.delete(`film:${id}`);
+    if (existingFilm?.slug) {
+      await this.cacheService.delete(`film:slug:${existingFilm.slug}`);
+    }
+    if (film.slug && film.slug !== existingFilm?.slug) {
+      await this.cacheService.delete(`film:slug:${film.slug}`);
+    }
+
+    await this.cacheService.delete('films:home');
+    await this.cacheService.delete('films:trending:7days');
+
+    return film;
   }
 
   async remove(id: number) {
-    return this.prisma.film.delete({
+    const film = await this.prisma.film.findUnique({
+      where: { id },
+      select: { slug: true },
+    });
+
+    const deletedFilm = await this.prisma.film.delete({
       where: { id },
     });
+
+    await this.cacheService.delete(`film:${id}`);
+    if (film?.slug) {
+      await this.cacheService.delete(`film:slug:${film.slug}`);
+    }
+    await this.cacheService.delete('films:home');
+    await this.cacheService.delete('films:trending:7days');
+
+    return deletedFilm;
   }
 
   async incrementView(id: number) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    return this.prisma.$transaction(async (tx) => {
-      await tx.film.update({
-        where: { id },
-        data: {
-          viewCount: { increment: 1 },
-        },
-      });
-
-      await tx.filmDailyView.upsert({
-        where: {
-          filmId_date: {
-            filmId: id,
-            date: today,
-          },
-        },
-        update: {
-          viewCount: { increment: 1 },
-        },
-        create: {
-          filmId: id,
-          date: today,
-          viewCount: 1,
-        },
-      });
-
-      return { success: true };
-    });
+    return this.viewCountService.incrementView(id);
   }
 
   async getTrendingFilms() {
+    const cacheKey = 'films:trending:7days';
+
+    const cached = await this.cacheService.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const sevenDaysAgo = new Date(today);
@@ -352,7 +401,6 @@ export class FilmsService {
       },
     });
 
-    // Sắp xếp lại films theo thứ tự totalViews từ cao xuống thấp
     const filmsMap = new Map(films.map((film) => [film.id, film]));
     const sortedFilms = filmIds
       .map((id) => filmsMap.get(id))
@@ -363,10 +411,20 @@ export class FilmsService {
         return viewsB - viewsA;
       });
 
+    // cache 10 phút
+    await this.cacheService.set(cacheKey, sortedFilms, 600);
+
     return sortedFilms;
   }
 
   async getHomeFilms() {
+    const cacheKey = 'films:home';
+
+    const cached = await this.cacheService.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
     const listSelect = {
       id: true,
       title: true,
@@ -429,12 +487,17 @@ export class FilmsService {
         this.getTrendingFilms(),
       ]);
 
-    return {
+    const result = {
       featured,
       popular,
       latest,
       topRated,
       trendingSeries,
     };
+
+    // cache 15 phút
+    await this.cacheService.set(cacheKey, result, 900);
+
+    return result;
   }
 }

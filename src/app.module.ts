@@ -11,10 +11,13 @@ import { SchedulerModule } from './scheduler/scheduler.module';
 import { TasksModule } from './tasks/tasks.module';
 import { WatchProgressModule } from './watch-progress/watch-progress.module';
 import { ConfigModule } from '@nestjs/config';
+import { CacheModule } from './cache/cache.module';
+import { ViewCountModule } from './view-count/view-count.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    CacheModule,
     PrismaModule,
     FilmsModule,
     CategoriesModule,
@@ -24,6 +27,7 @@ import { ConfigModule } from '@nestjs/config';
     SchedulerModule,
     TasksModule,
     WatchProgressModule,
+    ViewCountModule,
   ],
   controllers: [AppController],
   providers: [AppService],
