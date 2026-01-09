@@ -31,23 +31,23 @@ export class CacheService implements OnModuleInit, OnModuleDestroy {
     const redisUrl = this.getRedisUrl();
 
     if (!redisUrl) {
-      this.logger.warn(
-        'Redis URL không được cấu hình. Cache service sẽ hoạt động ở chế độ không có cache.',
-      );
+      // this.logger.warn(
+      //   'Redis URL không được cấu hình. Cache service sẽ hoạt động ở chế độ không có cache.',
+      // );
       this.isConnected = false;
       return;
     }
 
-    if (
-      redisUrl === 'redis://localhost:6379' &&
-      process.env.NODE_ENV === 'production'
-    ) {
-      this.logger.warn(
-        'Đang ở môi trường production nhưng Redis URL là localhost. Cache service sẽ không hoạt động.',
-      );
-      this.isConnected = false;
-      return;
-    }
+    // if (
+    //   redisUrl === 'redis://localhost:6379' &&
+    //   process.env.NODE_ENV === 'production'
+    // ) {
+    //   this.logger.warn(
+    //     'Đang ở môi trường production nhưng Redis URL là localhost. Cache service sẽ không hoạt động.',
+    //   );
+    //   this.isConnected = false;
+    //   return;
+    // }
 
     await this.connect(redisUrl);
   }
@@ -59,18 +59,14 @@ export class CacheService implements OnModuleInit, OnModuleDestroy {
         socket: {
           reconnectStrategy: (retries) => {
             if (retries > this.maxReconnectAttempts) {
-              this.logger.warn(
-                `Đã thử kết nối Redis.`,
-              );
+              this.logger.warn(`Đã thử kết nối Redis.`);
               return false;
             }
             const delay = Math.min(
               this.reconnectDelay * Math.pow(2, retries),
               30000,
             );
-            this.logger.log(
-              `Thử kết nối lại redis sau ${delay}ms`,
-            );
+            this.logger.log(`Thử kết nối lại redis sau ${delay}ms`);
             return delay;
           },
         },
