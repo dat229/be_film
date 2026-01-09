@@ -206,6 +206,7 @@ export class CrawlerService {
           actorIds.push(actor.id);
         }
       }
+      const uniqueActorIds = [...new Set(actorIds)];
 
       const keywordIds: number[] = [];
       if (filmData.keywords) {
@@ -255,7 +256,7 @@ export class CrawlerService {
 
       if (
         categoryIds.length > 0 ||
-        actorIds.length > 0 ||
+        uniqueActorIds.length > 0 ||
         keywordIds.length > 0
       ) {
         await this.prisma.filmCategory.deleteMany({
@@ -269,9 +270,9 @@ export class CrawlerService {
         await this.prisma.filmCategory.createMany({
           data: categoryIds.map((id) => ({ filmId: film.id, categoryId: id })),
         });
-        await this.prisma.filmActor.createMany({
-          data: actorIds.map((id) => ({ filmId: film.id, actorId: id })),
-        });
+        // await this.prisma.filmActor.createMany({
+        //   data: uniqueActorIds.map((id) => ({ filmId: film.id, actorId: id })),
+        // });
         await this.prisma.filmKeyword.createMany({
           data: keywordIds.map((id) => ({ filmId: film.id, keywordId: id })),
         });

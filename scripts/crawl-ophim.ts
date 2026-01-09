@@ -7,7 +7,7 @@ async function bootstrap() {
 
   try {
     const tasksService = app.get(TasksService);
-    // await tasksService.crawlMovies(200);
+    await tasksService.crawlMovies(200);
     // await tasksService.updateFilmTypeByEpisodes();
     await tasksService.randomFilmCountry();
   } catch (error) {
